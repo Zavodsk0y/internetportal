@@ -23,7 +23,6 @@ class Index(generic.ListView):
 
 
 class RegisterUserView(generic.CreateView):
-    model = AdvUser
     template_name = 'registration/register.html'
     form_class = UserRegistrationForm
     success_url = reverse_lazy('index')

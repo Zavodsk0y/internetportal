@@ -13,6 +13,10 @@ class UserRegistrationForm(forms.ModelForm):
                                 help_text='Повторите тот же самый пароль еще раз')
     personal_data_agreement = forms.BooleanField(required=True)
 
+    class Meta:
+        model = AdvUser
+        fields = ('fio', 'username', 'email', 'password1', 'password2', 'personal_data_agreement')
+
     def clean_password1(self):
         password1 = self.cleaned_data['password1']
         if password1:
@@ -21,8 +25,9 @@ class UserRegistrationForm(forms.ModelForm):
 
     def clean(self):
         super().clean()
-        password1 = self.cleaned_data['password1']
-        password2 = self.cleaned_data['password2']
+        password1 = self.cleaned_data.get('password1', None)
+        password2 = self.cleaned_data.get('password2', None)
+
         if password1 and password2 and password1 != password2:
             errors = {'password2': ValidationError(
                 'Введенные пароли не совпадают', code='password_mismatch'
@@ -35,7 +40,3 @@ class UserRegistrationForm(forms.ModelForm):
         if commit:
             user.save()
         return user
-
-    class Meta:
-        model = AdvUser
-        fields = ('fio', 'username', 'email', 'password1', 'password2', 'personal_data_agreement')
