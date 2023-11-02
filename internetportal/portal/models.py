@@ -16,18 +16,24 @@ class AdvUser(AbstractUser):
 class Category(models.Model):
     name = models.CharField(verbose_name='Категория заявки', max_length=255)
 
+    def __str__(self):
+        return self.name
+
 
 class Application(models.Model):
     name = models.CharField(help_text='Наименование заявки', max_length=255)
     description = models.TextField(help_text='Описание заявки')
     category = models.ForeignKey(Category, help_text='Категория заявки', on_delete=models.CASCADE)
-    comment = models.TextField(help_text='Принимая заявку в работу, напишите комментарий об этом', default=None)
+    comment = models.TextField(help_text='Принимая заявку в работу, напишите комментарий об этом', default=None,
+                               blank=True, null=True)
 
     APPLICATION_STATUS = (
         ('n', 'Новая'),
         ('a', 'Принято в работу'),
         ('d', 'Выполнено')
     )
+
+    author = models.ForeignKey(AdvUser, on_delete=models.CASCADE)
 
     status = models.CharField(max_length=1, choices=APPLICATION_STATUS, blank=True, default='n',
                               help_text='Статус заявки')
@@ -36,3 +42,6 @@ class Application(models.Model):
                               validators=[FileExtensionValidator(allowed_extensions=['jpeg', 'jpg', 'png', 'bmp'])])
 
     date = models.DateField(default=django.utils.timezone.now)
+
+    def __str__(self):
+        return self.name

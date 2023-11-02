@@ -7,8 +7,15 @@ from .forms import *
 from .models import *
 
 
-def index(request):
-    return render(request, 'index.html')
+class Index(generic.ListView):
+    model = Application
+    template_name = 'index.html'
+    context_object_name = 'applications'
+
+    def get_queryset(self):
+        return Application.objects.filter(status__exact='d').order_by('date')
+
+
 
 
 class RegisterUserView(generic.CreateView):
