@@ -17,7 +17,7 @@ class Index(generic.ListView):
         return context
 
     def get_queryset(self):
-        return Application.objects.filter(status__exact='d').order_by('date')
+        return Application.objects.filter(status__exact='d').order_by('-date')[:4]
 
 
 class RegisterUserView(generic.CreateView):
