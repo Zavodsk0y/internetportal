@@ -37,5 +37,6 @@ class LoginUserView(views.LoginView):
 class LogoutUserView(LoginRequiredMixin, views.LogoutView):
     template_name = 'registration/logout.html'
 
+
 class UserProfileView(LoginRequiredMixin, TemplateView):
     template_name = 'personal/user_personal.html'

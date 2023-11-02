@@ -126,5 +126,3 @@ LOGIN_REDIRECT_URL = '/profile/'
 Command.default_port = '8080'
 
 Command.default_addr = 'localhost'
-
-

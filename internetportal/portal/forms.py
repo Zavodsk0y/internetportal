@@ -1,6 +1,5 @@
 from django import forms
 from django.contrib.auth import password_validation
-from django.core.exceptions import ValidationError
 
 from .models import *
 
@@ -40,4 +39,3 @@ class UserRegistrationForm(forms.ModelForm):
     class Meta:
         model = AdvUser
         fields = ('fio', 'username', 'email', 'password1', 'password2', 'personal_data_agreement')
-

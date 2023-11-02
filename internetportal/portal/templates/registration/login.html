@@ -4,6 +4,7 @@
 
 <h2>Авторизация</h2>
 <form method="post" enctype="multipart/form-data">
+
     {% csrf_token %}
 
     {{ form.as_p }}
