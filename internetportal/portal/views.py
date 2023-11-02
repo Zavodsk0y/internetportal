@@ -1,6 +1,8 @@
 from django.contrib.auth import views
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views import generic
+from django.views.generic import TemplateView
 
 from .forms import *
 from .models import *
@@ -30,3 +32,10 @@ class RegisterUserView(generic.CreateView):
 class LoginUserView(views.LoginView):
     template_name = 'registration/login.html'
     success_url = reverse_lazy('index')
+
+
+class LogoutUserView(LoginRequiredMixin, views.LogoutView):
+    template_name = 'registration/logout.html'
+
+class UserProfileView(LoginRequiredMixin, TemplateView):
+    template_name = 'personal/user_personal.html'

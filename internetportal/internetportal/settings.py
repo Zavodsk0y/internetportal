@@ -121,6 +121,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'portal.AdvUser'
 
+LOGIN_REDIRECT_URL = '/profile/'
+
 Command.default_port = '8080'
 
 Command.default_addr = 'localhost'
+
+

@@ -41,7 +41,7 @@ class Application(models.Model):
     photo = models.ImageField(upload_to='media/',
                               validators=[FileExtensionValidator(allowed_extensions=['jpeg', 'jpg', 'png', 'bmp'])])
 
-    date = models.DateField(default=django.utils.timezone.now)
+    date = models.DateTimeField(default=django.utils.timezone.now)
 
     def __str__(self):
         return self.name
