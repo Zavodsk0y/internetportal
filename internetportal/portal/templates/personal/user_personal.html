@@ -1,5 +1,7 @@
 {% extends 'base_generic.html' %}
 
+{% load static %}
+
 {% block title %}
 
 <title>Личный кабинет пользователя</title>
@@ -9,5 +11,18 @@
 {% block content %}
 
 <h2>Личный кабинет пользователя {{ user.get_username }}</h2>
+
+<h4>Хотите оставить заявку? <a href="{% url 'app-create' %}">Оставить заявку</a></h4>
+
+{% for application in apps %}
+
+<p>{{ application.date }}</p>
+<p>Наименование заявки: {{ application.name }}</p>
+<p>Описание заявки: {{ application.description }}</p>
+<p>Категория заявки: {{ application.category}}</p>
+<p>Статус заявки: {{ application.get_status_display }}</p>
+<hr>
+
+{% endfor %}
 
 {% endblock %}

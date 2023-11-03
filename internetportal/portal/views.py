@@ -1,9 +1,7 @@
 from django.contrib.auth import views
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import request
 from django.urls import reverse_lazy
 from django.views import generic
-from django.views.generic import TemplateView
 
 from .forms import *
 from .models import *
@@ -38,6 +36,24 @@ class LogoutUserView(LoginRequiredMixin, views.LogoutView):
     template_name = 'registration/logout.html'
 
 
-class UserProfileView(LoginRequiredMixin, TemplateView):
+class UserProfileView(LoginRequiredMixin, generic.ListView):
     template_name = 'personal/user_personal.html'
+    model = Application
+    context_object_name = 'apps'
 
+    def get_queryset(self):
+        return Application.objects.filter(author=self.request.user).order_by('-date')
+
+
+class ApplicationCreateView(generic.CreateView):
+    template_name = 'personal/create_application.html'
+    model = Application
+    form_class = ApplicationCreateForm
+    success_url = reverse_lazy('profile')
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+class ApplicationDeleteView(generic.DeleteView):
+    template_name = 'personal/delete_application'
