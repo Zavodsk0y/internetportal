@@ -1,5 +1,6 @@
 from django.contrib.auth import views
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import request
 from django.urls import reverse_lazy
 from django.views import generic
 from django.views.generic import TemplateView
@@ -39,3 +40,4 @@ class LogoutUserView(LoginRequiredMixin, views.LogoutView):
 
 class UserProfileView(LoginRequiredMixin, TemplateView):
     template_name = 'personal/user_personal.html'
+
