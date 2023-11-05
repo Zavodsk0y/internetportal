@@ -14,6 +14,17 @@
 
 <h4>Хотите оставить заявку? <a href="{% url 'app-create' %}">Оставить заявку</a></h4>
 
+<h4>Фильтровать заявки по статусу:</h4>
+<form method="get">
+    <select name="status">
+        <option value="">Все заявки</option>
+        <option value="n">Новая</option>
+        <option value="a">Принято в работу</option>
+        <option value="d">Выполнено</option>
+    </select>
+    <input type="submit" value="Применить">
+</form>
+
 {% for application in apps %}
 
 <p>{{ application.date }}</p>
@@ -21,6 +32,7 @@
 <p>Описание заявки: {{ application.description }}</p>
 <p>Категория заявки: {{ application.category}}</p>
 <p>Статус заявки: {{ application.get_status_display }}</p>
+<p><a href="{% url 'app-delete' application.id %}">Удалить</a></p>
 <hr>
 
 {% endfor %}

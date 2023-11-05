@@ -42,7 +42,12 @@ class UserProfileView(LoginRequiredMixin, generic.ListView):
     context_object_name = 'apps'
 
     def get_queryset(self):
-        return Application.objects.filter(author=self.request.user).order_by('-date')
+        status = self.request.GET.get('status')
+        queryset = Application.objects.filter(author=self.request.user).order_by('-date')
+        if status:
+            queryset = queryset.filter(status=status)
+
+        return queryset
 
 
 class ApplicationCreateView(generic.CreateView):
@@ -55,5 +60,8 @@ class ApplicationCreateView(generic.CreateView):
         form.instance.author = self.request.user
         return super().form_valid(form)
 
+
 class ApplicationDeleteView(generic.DeleteView):
-    template_name = 'personal/delete_application'
+    template_name = 'personal/delete_application.html'
+    model = Application
+    success_url = reverse_lazy('profile')
