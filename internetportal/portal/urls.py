@@ -15,4 +15,5 @@ urlpatterns = [
                   path('admin/', AdminView.as_view(), name='admin'),
                   path('applications/<int:pk>/update', AdminUpdateApplicationView.as_view(), name='app-update'),
                   path('categories/<int:pk>/delete', AdminDeleteCategoryView.as_view(), name='category-delete'),
+                  path('categories/create', AdminCreateCategoryView.as_view(), name='category-create'),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

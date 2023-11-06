@@ -132,3 +132,6 @@ class AdminDeleteCategoryView(PermissionRequiredMixin, generic.DeleteView):
 class AdminCreateCategoryView(PermissionRequiredMixin, generic.CreateView):
     permission_required = 'is_staff'
     template_name = 'personal/create_category.html'
+    model = Category
+    form_class = CategoryCreateForm
+    success_url = reverse_lazy('admin')

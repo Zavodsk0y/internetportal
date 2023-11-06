@@ -82,3 +82,9 @@ class ApplicationUpdateStatusForm(forms.ModelForm):
         if commit:
             instance.save()
         return instance
+
+
+class CategoryCreateForm(forms.ModelForm):
+    class Meta:
+        model = Category
+        fields = ('name',)
