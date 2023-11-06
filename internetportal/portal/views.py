@@ -51,7 +51,7 @@ class UserProfileView(LoginRequiredMixin, generic.ListView):
         return queryset
 
 
-class ApplicationCreateView(generic.CreateView):
+class ApplicationCreateView(LoginRequiredMixin, generic.CreateView):
     template_name = 'personal/create_application.html'
     model = Application
     form_class = ApplicationCreateForm
@@ -62,7 +62,7 @@ class ApplicationCreateView(generic.CreateView):
         return super().form_valid(form)
 
 
-class ApplicationDeleteView(generic.DeleteView):
+class ApplicationDeleteView(LoginRequiredMixin, generic.DeleteView):
     template_name = 'personal/delete_application.html'
     model = Application
     success_url = reverse_lazy('profile')
