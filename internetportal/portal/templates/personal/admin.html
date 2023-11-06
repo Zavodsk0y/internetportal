@@ -1,0 +1,51 @@
+{% extends "base_generic.html" %}
+
+{% block title %}
+
+<title>Home Page</title>
+
+{% endblock %}
+{% block content %}
+<h1>Home</h1>
+
+<h4>Фильтровать заявки по статусу:</h4>
+<form method="get">
+    <select name="status">
+        <option value="">Все заявки</option>
+        <option value="n">Новая</option>
+        <option value="a">Принято в работу</option>
+        <option value="d">Выполнено</option>
+    </select>
+    <input type="submit" value="Применить">
+</form>
+
+{% for application in applications %}
+
+<p>{{ application.date }}</p>
+<p>Наименование заявки: {{ application.name }}</p>
+<p>Категория заявки: {{ application.category}}</p>
+<p>Статус заявки: {{ application.get_status_display }}</p>
+<p>Изображение:</p>
+<img src="{{ application.photo.url }}" alt="Изображение не найдено" width="400px" height="350px">
+{% if application.status == 'n' %}
+        <p><a href="{% url 'app-update' application.id %}">Сменить статус</a></p>
+    {% else %}
+        <p>Вы не можете обновить статус данной заявки, так как ее статус - {{ application.get_status_display }}</p>
+    {% endif %}
+<hr>
+
+{% endfor %}
+
+<h3>Существующие категории</h3>
+
+{% for category in categories %}
+
+<ul>
+    <li>
+        {{ category }} -- <a href="{% url 'category-delete' category.id %}">Удалить</a>
+    </li>
+</ul>
+
+{% endfor %}
+
+{% endblock %}

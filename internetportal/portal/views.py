@@ -1,5 +1,5 @@
 from django.contrib.auth import views
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views import generic
@@ -82,3 +82,39 @@ class ApplicationDeleteView(LoginRequiredMixin, generic.DeleteView):
             return HttpResponseRedirect(self.success_url)
 
         return super().delete(request, *args, **kwargs)
+
+
+class AdminView(PermissionRequiredMixin, generic.ListView):
+    permission_required = 'is_staff'
+    template_name = 'personal/admin.html'
+    model = Application
+    context_object_name = 'applications'
+
+    def get_queryset(self):
+        status = self.request.GET.get('status')
+        queryset = Application.objects.filter().order_by('-date')
+        if status:
+            queryset = queryset.filter(status=status)
+
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["categories"] = Category.objects.all()
+        return context
+
+
+class AdminUpdateApplicationView(PermissionRequiredMixin, generic.UpdateView):
+    permission_required = 'is_staff'
+    template_name = 'personal/update_application.html'
+    model = Application
+    form_class = ApplicationUpdateStatusForm
+    success_url = reverse_lazy('admin')
+
+
+class AdminDeleteCategoryView(PermissionRequiredMixin, generic.DeleteView):
+    permission_required = 'is_staff'
+    template_name = 'personal/delete_category.html'
+    model = Category
+    success_url = reverse_lazy('admin')
+

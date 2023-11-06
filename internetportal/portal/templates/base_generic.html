@@ -25,6 +25,9 @@
                 {% if user.is_authenticated %}
                 <li>User: {{ user.get_username }}</li>
                 <li><a href="{% url 'profile' %}">Profile</a></li>
+                {% if user.is_staff %}
+                <li><a href="{% url 'admin' %}">Admin panel</a></li>
+                {% endif %}
                 <li><a href="{% url 'logout' %}">Logout</a></li>
                 {% else %}
                 <li><a href="{% url 'registration' %}">Signup</a></li>

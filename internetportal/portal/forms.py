@@ -46,3 +46,39 @@ class ApplicationCreateForm(forms.ModelForm):
     class Meta:
         model = Application
         fields = ('name', 'description', 'category', 'photo')
+
+
+class ApplicationUpdateStatusForm(forms.ModelForm):
+    new_photo = forms.ImageField(
+        validators=[FileExtensionValidator(allowed_extensions=['jpeg', 'jpg', 'png', 'bmp']),
+                    validate_file_size], required=False)
+
+    class Meta:
+        model = Application
+        fields = ('status', 'comment', 'new_photo')
+
+    def clean(self):
+        super().clean()
+        status = self.cleaned_data.get('status')
+        new_photo = self.cleaned_data.get('new_photo')
+        comment = self.cleaned_data.get('comment')
+
+        if status == 'd' and not new_photo:
+            raise ValidationError('Меняя статус заявки на "Выполнено", прикрепите изображение созданного дизайна')
+        elif status == 'd' and comment:
+            raise ValidationError('Указывая статус "Выполнено", вы не должны указывать комментарий')
+
+        if status == 'a' and not comment:
+            raise ValidationError('Меняя статус заявки на "Принято в работу", укажите комментарий')
+        elif status == 'a' and new_photo:
+            raise ValidationError(
+                'Меняя статус заявки на "Принято в работу, вы не имеете права прикреплять изображение созданного дизайна')
+
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        new_photo = self.cleaned_data.get('new_photo')
+        if new_photo is not None:
+            instance.photo = new_photo
+        if commit:
+            instance.save()
+        return instance
