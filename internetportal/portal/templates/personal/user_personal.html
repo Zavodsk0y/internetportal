@@ -32,7 +32,11 @@
 <p>Описание заявки: {{ application.description }}</p>
 <p>Категория заявки: {{ application.category}}</p>
 <p>Статус заявки: {{ application.get_status_display }}</p>
-<p><a href="{% url 'app-delete' application.id %}">Удалить</a></p>
+{% if application.status == 'n' %}
+        <p><a href="{% url 'app-delete' application.id %}">Удалить</a></p>
+    {% else %}
+        <p>Вы не можете удалить эту заявку, так как её статус - '{{ application.get_status_display }}'</p>
+    {% endif %}
 <hr>
 
 {% endfor %}

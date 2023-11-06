@@ -1,5 +1,6 @@
 from django.contrib.auth import views
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views import generic
 
@@ -65,3 +66,19 @@ class ApplicationDeleteView(generic.DeleteView):
     template_name = 'personal/delete_application.html'
     model = Application
     success_url = reverse_lazy('profile')
+
+    def get(self, request, *args, **kwargs):
+        self.application = self.get_object()
+
+        if self.application.status in ['a', 'd']:
+            return HttpResponseRedirect(self.success_url)
+
+        return super().get(request, *args, **kwargs)
+
+    def delete(self, request, *args, **kwargs):
+        self.application = self.get_object()
+
+        if self.object.status in ['a', 'd']:
+            return HttpResponseRedirect(self.success_url)
+
+        return super().delete(request, *args, **kwargs)
