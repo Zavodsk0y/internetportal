@@ -8,6 +8,12 @@
 {% block content %}
 <h1>Home</h1>
 
+{% for message in messages %}
+
+{{ message }}
+
+{% endfor %}
+
 <h4>Фильтровать заявки по статусу:</h4>
 <form method="get">
     <select name="status">

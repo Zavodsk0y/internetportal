@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth import views
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.http import HttpResponseRedirect
@@ -111,6 +112,15 @@ class AdminUpdateApplicationView(PermissionRequiredMixin, generic.UpdateView):
     form_class = ApplicationUpdateStatusForm
     success_url = reverse_lazy('admin')
 
+    def form_valid(self, form):
+        instance = form.save(commit=False)
+        if instance.status in ['d', 'a']:
+            messages.add_message(self.request, messages.ERROR, "Вы не можете изменить статус данной заявки.")
+            return HttpResponseRedirect(reverse_lazy('admin'))
+
+        instance.save()
+        return HttpResponseRedirect(reverse_lazy('admin'))
+
 
 class AdminDeleteCategoryView(PermissionRequiredMixin, generic.DeleteView):
     permission_required = 'is_staff'
@@ -118,3 +128,7 @@ class AdminDeleteCategoryView(PermissionRequiredMixin, generic.DeleteView):
     model = Category
     success_url = reverse_lazy('admin')
 
+
+class AdminCreateCategoryView(PermissionRequiredMixin, generic.CreateView):
+    permission_required = 'is_staff'
+    template_name = 'personal/create_category.html'
