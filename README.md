@@ -14,7 +14,7 @@
 ```
 1. Склонируйте репозиторий: 
     
-    git clone https://github.com/Zavodsk0y/internetportal -b guest-branch
+    git clone https://github.com/Zavodsk0y/internetportal -b authorized-branch
    
 2. Перейдите в директорию проекта
 
