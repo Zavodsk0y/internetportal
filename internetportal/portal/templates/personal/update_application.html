@@ -7,6 +7,13 @@
 {% endblock %}
 {% block content %}
 
+{% if application.status == 'd' or application.status == 'a' %}
+
+<h3>Вы не можете обновить данную заявку</h3>
+<a href="{% url 'admin' %}">Назад</a>
+
+{% else %}
+
 <h1>Обновление статуса заявки</h1>
 
 <form method="post" enctype="multipart/form-data">
@@ -19,5 +26,7 @@
     <input type="submit" value="Обновить заявку">
 
 </form>
+
+{% endif %}
 
 {% endblock %}

@@ -42,6 +42,11 @@ class Application(models.Model):
                               validators=[FileExtensionValidator(allowed_extensions=['jpeg', 'jpg', 'png', 'bmp']),
                                           validate_file_size])
 
+    new_photo = models.ImageField(upload_to='media/',
+                                     validators=[
+                                         FileExtensionValidator(allowed_extensions=['jpeg', 'jpg', 'png', 'bmp']),
+                                         validate_file_size], blank=True, default=None, null=True)
+
     date = models.DateTimeField(default=django.utils.timezone.now)
 
     def __str__(self):

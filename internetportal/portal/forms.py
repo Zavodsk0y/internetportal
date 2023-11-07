@@ -49,10 +49,6 @@ class ApplicationCreateForm(forms.ModelForm):
 
 
 class ApplicationUpdateStatusForm(forms.ModelForm):
-    new_photo = forms.ImageField(
-        validators=[FileExtensionValidator(allowed_extensions=['jpeg', 'jpg', 'png', 'bmp']),
-                    validate_file_size], required=False)
-
     class Meta:
         model = Application
         fields = ('status', 'comment', 'new_photo')
@@ -73,16 +69,6 @@ class ApplicationUpdateStatusForm(forms.ModelForm):
         elif status == 'a' and new_photo:
             raise ValidationError(
                 'Меняя статус заявки на "Принято в работу, вы не имеете права прикреплять изображение созданного дизайна')
-
-    def save(self, commit=True):
-        instance = super().save(commit=False)
-        new_photo = self.cleaned_data.get('new_photo')
-        if new_photo is not None:
-            instance.photo = new_photo
-        if commit:
-            instance.save()
-        return instance
-
 
 class CategoryCreateForm(forms.ModelForm):
     class Meta:
