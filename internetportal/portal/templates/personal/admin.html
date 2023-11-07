@@ -33,11 +33,18 @@
 <p>Статус заявки: {{ application.get_status_display }}</p>
 <p>Изображение:</p>
 <img src="{{ application.photo.url }}" alt="Изображение не найдено" width="400px" height="350px">
+{% if application.new_photo %}
+<p>Дизайн-изображение:</p>
+<img src="{{ application.new_photo.url }}" alt="Изображение не найдено" width="400px" height="350px">
+{% endif %}
 {% if application.status == 'n' %}
         <p><a href="{% url 'app-update' application.id %}">Сменить статус</a></p>
     {% else %}
         <p>Вы не можете обновить статус данной заявки, так как ее статус - {{ application.get_status_display }}</p>
     {% endif %}
+{% if application.comment %}
+<p>Комментарий по поводу "Принято в работу": {{ application.comment }}</p>
+{% endif %}
 <hr>
 
 {% endfor %}
