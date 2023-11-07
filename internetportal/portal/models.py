@@ -39,7 +39,8 @@ class Application(models.Model):
                               help_text='Статус заявки')
 
     photo = models.ImageField(upload_to='media/',
-                              validators=[FileExtensionValidator(allowed_extensions=['jpeg', 'jpg', 'png', 'bmp'])])
+                              validators=[FileExtensionValidator(allowed_extensions=['jpeg', 'jpg', 'png', 'bmp']),
+                                          validate_file_size])
 
     date = models.DateTimeField(default=django.utils.timezone.now)
 

@@ -1,5 +1,7 @@
 {% extends 'base_generic.html' %}
 
+{% load static %}
+
 {% block title %}
 
 <title>Личный кабинет пользователя</title>
@@ -9,5 +11,34 @@
 {% block content %}
 
 <h2>Личный кабинет пользователя {{ user.get_username }}</h2>
+
+<h4>Хотите оставить заявку? <a href="{% url 'app-create' %}">Оставить заявку</a></h4>
+
+<h4>Фильтровать заявки по статусу:</h4>
+<form method="get">
+    <select name="status">
+        <option value="">Все заявки</option>
+        <option value="n">Новая</option>
+        <option value="a">Принято в работу</option>
+        <option value="d">Выполнено</option>
+    </select>
+    <input type="submit" value="Применить">
+</form>
+
+{% for application in apps %}
+
+<p>{{ application.date }}</p>
+<p>Наименование заявки: {{ application.name }}</p>
+<p>Описание заявки: {{ application.description }}</p>
+<p>Категория заявки: {{ application.category}}</p>
+<p>Статус заявки: {{ application.get_status_display }}</p>
+{% if application.status == 'n' %}
+        <p><a href="{% url 'app-delete' application.id %}">Удалить</a></p>
+    {% else %}
+        <p>Вы не можете удалить эту заявку, так как её статус - {{ application.get_status_display }}</p>
+    {% endif %}
+<hr>
+
+{% endfor %}
 
 {% endblock %}

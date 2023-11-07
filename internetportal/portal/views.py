@@ -1,9 +1,8 @@
 from django.contrib.auth import views
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import request
+from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views import generic
-from django.views.generic import TemplateView
 
 from .forms import *
 from .models import *
@@ -38,6 +37,48 @@ class LogoutUserView(LoginRequiredMixin, views.LogoutView):
     template_name = 'registration/logout.html'
 
 
-class UserProfileView(LoginRequiredMixin, TemplateView):
+class UserProfileView(LoginRequiredMixin, generic.ListView):
     template_name = 'personal/user_personal.html'
+    model = Application
+    context_object_name = 'apps'
 
+    def get_queryset(self):
+        status = self.request.GET.get('status')
+        queryset = Application.objects.filter(author=self.request.user).order_by('-date')
+        if status:
+            queryset = queryset.filter(status=status)
+
+        return queryset
+
+
+class ApplicationCreateView(LoginRequiredMixin, generic.CreateView):
+    template_name = 'personal/create_application.html'
+    model = Application
+    form_class = ApplicationCreateForm
+    success_url = reverse_lazy('profile')
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+
+class ApplicationDeleteView(LoginRequiredMixin, generic.DeleteView):
+    template_name = 'personal/delete_application.html'
+    model = Application
+    success_url = reverse_lazy('profile')
+
+    def get(self, request, *args, **kwargs):
+        self.application = self.get_object()
+
+        if self.application.status in ['a', 'd']:
+            return HttpResponseRedirect(self.success_url)
+
+        return super().get(request, *args, **kwargs)
+
+    def delete(self, request, *args, **kwargs):
+        self.application = self.get_object()
+
+        if self.object.status in ['a', 'd']:
+            return HttpResponseRedirect(self.success_url)
+
+        return super().delete(request, *args, **kwargs)

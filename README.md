@@ -2,19 +2,14 @@
 
 ## Добро пожаловать!
 
-## Функционал гостя
-
-### Примечание
-
-Помимо указанного функционала гостя, были реализованы выход пользователя и
-заглушка личного кабинета в виде TemplateView
+## Функционал авторизованного пользователя
 
 ### Установка проекта
 
 ```
 1. Склонируйте репозиторий: 
     
-    git clone https://github.com/Zavodsk0y/internetportal -b guest-branch
+    git clone https://github.com/Zavodsk0y/internetportal -b authorized-branch
    
 2. Перейдите в директорию проекта
 

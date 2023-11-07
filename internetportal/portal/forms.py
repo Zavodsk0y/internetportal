@@ -40,3 +40,9 @@ class UserRegistrationForm(forms.ModelForm):
         if commit:
             user.save()
         return user
+
+
+class ApplicationCreateForm(forms.ModelForm):
+    class Meta:
+        model = Application
+        fields = ('name', 'description', 'category', 'photo')
