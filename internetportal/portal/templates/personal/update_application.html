@@ -1,0 +1,32 @@
+{% extends "base_generic.html" %}
+
+{% block title %}
+
+<title>Обновление заявки</title>
+
+{% endblock %}
+{% block content %}
+
+{% if application.status == 'd' or application.status == 'a' %}
+
+<h3>Вы не можете обновить данную заявку</h3>
+<a href="{% url 'admin' %}">Назад</a>
+
+{% else %}
+
+<h1>Обновление статуса заявки</h1>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+    <img src="{{ application.photo.url }}" alt="Изображение не найдено" width="400px" height="350px">
+
+    <input type="submit" value="Обновить заявку">
+
+</form>
+
+{% endif %}
+
+{% endblock %}

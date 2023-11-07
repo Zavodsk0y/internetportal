@@ -2,14 +2,14 @@
 
 ## Добро пожаловать!
 
-## Функционал авторизованного пользователя
+## Функционал администратора
 
 ### Установка проекта
 
 ```
 1. Склонируйте репозиторий: 
     
-    git clone https://github.com/Zavodsk0y/internetportal -b authorized-branch
+    git clone https://github.com/Zavodsk0y/internetportal -b admin-branch
    
 2. Перейдите в директорию проекта
 
